@@ -1,28 +1,33 @@
 import "./style.css";
 
 class Todo {
-  constructor(title, description, dueDate, priority, checklist) {
+  constructor(title, description, dueDate, priority) {
     this.title = title;
     this.description = description;
     this.dueDate = dueDate;
     this.priority = priority;
-    this.checklist = checklist;
   }
-  show() {
-    return `Title: ${this.title}, Description: ${this.description}, Date: ${this.dueDate}, Priority: ${this.priority}`;
+  getTitle() {
+    return this.title;
+  }
+  getDescription() {
+    return this.description;
+  }
+  getDate() {
+    return this.dueDate;
+  }
+  getPriority() {
+    return this.priority;
   }
 }
 
 class Lists {
-  constructor(todoList) {
-    this.todoList = todoList;
-  }
   listContainer = [];
 
   addTodoList(todo) {
     this.listContainer.push(todo);
   }
-  getList() {
+  get() {
     return this.listContainer;
   }
 }
@@ -34,14 +39,13 @@ function createToDo() {
   const description = document.querySelector("#description").value;
   const priority = document.querySelector("#priority").value;
   const date = document.querySelector("#date").value;
-  const check = document.getElementById("check").checked;
-  const newTodo = new Todo(title, description, date, priority, check);
+  const newTodo = new Todo(title, description, date, priority);
   return newTodo;
 }
 
 function refreshList() {
   removeList();
-  list.listContainer.forEach((element) => {
+  list.get().forEach((element) => {
     addToList(element);
   });
 }
@@ -53,12 +57,23 @@ function removeList() {
   });
 }
 
-const dom = document.getElementById("content-div");
+const dom = document.getElementById("lists-content");
 
 function addToList(todo) {
   const listDiv = document.createElement("div");
   listDiv.className = "list-div";
-  listDiv.textContent = todo.show();
+  const title = document.createElement("h3");
+  const description = document.createElement("h3");
+  const date = document.createElement("h3");
+  const priority = document.createElement("h3");
+  title.textContent = todo.getTitle();
+  description.textContent = todo.getDescription();
+  date.textContent = todo.getDate();
+  priority.textContent = todo.getPriority();
+  listDiv.appendChild(title);
+  listDiv.appendChild(description);
+  listDiv.appendChild(date);
+  listDiv.appendChild(priority);
   dom.appendChild(listDiv);
 }
 
@@ -66,5 +81,13 @@ const addButton = document.getElementById("add-todo-button");
 
 addButton.addEventListener("click", () => {
   list.addTodoList(createToDo());
+  form.style.display = "none";
   refreshList();
+});
+
+const newTaskButton = document.getElementById("new-task-button");
+const form = document.getElementById("form-section");
+
+newTaskButton.addEventListener("click", () => {
+  form.style.display = "block";
 });

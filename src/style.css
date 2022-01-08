@@ -1,3 +1,75 @@
+html {
+  width: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  text-align: center;
+  background-color: #588157;
+  color: white;
+}
+
+header {
+  width: 100%;
+  background-color: #3a5a40;
+}
+
+#menu-section {
+  width: 150px;
+  height: 100%;
+  position: absolute;
+  background-color: #344e41;
+}
+
+#lists-buttons {
+  display: flex;
+  flex-direction: column;
+  margin-top: 30px;
+  gap: 30px;
+}
+
+#todo-container {
+  margin-top: 20px;
+  margin-left: 180px;
+}
+
+.list-div {
+  display: flex;
+  justify-content: space-between;
+  color: white;
+  border-bottom-style: solid;
+  width: 800px;
+}
+
+#create-task-button-container {
+  margin-bottom: 90px;
+}
+
+#form-section {
+  margin-top: 10px;
+  padding: 50px;
+  display: none;
+  position: absolute;
+  top: 70px;
+  left: 150px;
+  background-color: #344e41;
+}
+
+button {
+  color: inherit;
+  height: 40px;
+  border: none;
+  background-color: #a3b18a;
+}
+
+button:hover {
+  cursor: pointer;
+  background-color: white;
+}
+
 form {
   display: flex;
+  gap: 10px;
 }
