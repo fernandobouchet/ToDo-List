@@ -6,10 +6,40 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ToDo List</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="main.js" defer></script>
 </head>
 
 <body>
+    <div id="content-div">
+        <header>
+            <h1>TODO LIST</h1>
+        </header>
+        <h2>Menu</h2>
 
+        <section id="menu-section">
+        </section>
+        <h2>ADD TODO</h2>
+
+        <section id="lists-section">
+            <form action="">
+                <label for="title">Title</label>
+                <input type="text" id="title">
+                <label for="description">Description</label>
+                <input type="text" id="description">
+                <label for="dueDate">Date</label>
+                <input type="date" name="" id="date">
+                <label for="priority">Priority</label>
+                <select name="" id="priority">
+                    <option value="Normal">Normal</option>
+                    <option value="Medium">Medium</option>
+                    <option value="High">High</option>
+                </select> <label for="check">Done</label>
+                <input type="checkbox" name="" id="check">
+                <button type="button" id="add-todo-button">Add TODO</button>
+            </form>
+        </section>
+    </div>
 </body>
 
 </html>
