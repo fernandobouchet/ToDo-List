@@ -12,6 +12,7 @@ body {
   background-color: #588157;
   font-family: "Open Sans", sans-serif;
   color: white;
+  font-size: 20px;
 }
 
 header {
@@ -20,7 +21,7 @@ header {
 }
 
 #menu-section {
-  width: 150px;
+  width: 200px;
   height: 100%;
   position: absolute;
   background-color: #344e41;
@@ -33,35 +34,35 @@ header {
   gap: 30px;
 }
 
-#todo-container {
-  margin-top: 20px;
-  margin-left: 180px;
-}
-
 .list-div {
   display: flex;
   justify-content: space-between;
   color: white;
   border-bottom-style: solid;
+  margin-left: 25%;
   width: 800px;
 }
 
 #create-task-button-container {
+  margin-left: 25%;
+  width: 800px;
   margin-bottom: 90px;
 }
 
 #form-section {
-  margin-top: 10px;
-  padding: 50px;
+  margin-top: 39px;
+  padding: 40px;
   display: none;
   position: absolute;
   top: 70px;
-  left: 150px;
+  left: 15%;
   background-color: #344e41;
 }
 
 button {
   color: inherit;
+  font-family: inherit;
+  font-size: inherit;
   height: 40px;
   border: none;
   background-color: #a3b18a;
@@ -75,4 +76,9 @@ button:hover {
 form {
   display: flex;
   gap: 10px;
+}
+
+#new-task-button {
+  margin-top: 30px;
+  width: 800px;
 }

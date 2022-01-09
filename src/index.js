@@ -27,6 +27,9 @@ class Lists {
   addTodoList(todo) {
     this.listContainer.push(todo);
   }
+  removeTodoList(todo) {
+    this.listContainer.splice(this.listContainer.indexOf(todo), 1);
+  }
   get() {
     return this.listContainer;
   }
@@ -66,6 +69,14 @@ function addToList(todo) {
   const description = document.createElement("h3");
   const date = document.createElement("h3");
   const priority = document.createElement("h3");
+  const deleteListButton = document.createElement("button");
+  deleteListButton.textContent = "Delete";
+
+  deleteListButton.addEventListener("click", () => {
+    list.removeTodoList(todo);
+    refreshList();
+  });
+
   title.textContent = todo.getTitle();
   description.textContent = todo.getDescription();
   date.textContent = todo.getDate();
@@ -74,6 +85,7 @@ function addToList(todo) {
   listDiv.appendChild(description);
   listDiv.appendChild(date);
   listDiv.appendChild(priority);
+  listDiv.appendChild(deleteListButton);
   dom.appendChild(listDiv);
 }
 
