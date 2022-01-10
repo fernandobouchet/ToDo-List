@@ -137,8 +137,12 @@ function addTodayList() {
     .get()
     .filter((list) => list.getDate() == todayDate);
   filteredToday.forEach((day) => {
-    listToday.addTodoList(day);
+    if (!listToday.get().includes(day)) {
+      listToday.addTodoList(day);
+    }
   });
+  removeListFromDocument("today-lists-content");
+
   refreshList(listToday, todayList);
 }
 
@@ -149,8 +153,12 @@ function addWeekList() {
     .get()
     .filter((list) => isThisWeek(parseISO(list.getDate())));
   filteredWeek.forEach((day) => {
-    listWeek.addTodoList(day);
+    if (!listWeek.get().includes(day)) {
+      listWeek.addTodoList(day);
+    }
   });
+  removeListFromDocument("week-lists-content");
+
   refreshList(listWeek, weekList);
 }
 
@@ -161,3 +169,11 @@ weekButton.addEventListener("click", () => {
   addWeekList();
   weekContainer.style.display = "block";
 });
+
+function removeListFromDocument(container) {
+  const containerDiv = document.getElementById(container);
+  const listDivs = containerDiv.querySelectorAll(".list-div");
+  listDivs.forEach((element) => {
+    element.remove();
+  });
+}
