@@ -82,3 +82,13 @@ form {
   margin-top: 30px;
   width: 800px;
 }
+
+#home-container {
+  display: none;
+}
+#today-container {
+  display: none;
+}
+#week-container {
+  display: none;
+}
