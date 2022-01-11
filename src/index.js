@@ -55,8 +55,9 @@ function refreshList(listName, div) {
   });
 }
 
-function removeList() {
-  const listDivs = document.querySelectorAll(".list-div");
+function removeListFromDocument(container) {
+  const containerDiv = document.getElementById(container);
+  const listDivs = containerDiv.querySelectorAll(".list-div");
   listDivs.forEach((element) => {
     element.remove();
   });
@@ -76,14 +77,15 @@ function addToList(todo, div) {
 
   deleteListButton.addEventListener("click", () => {
     list.removeTodoList(todo);
-    removeList();
+    listToday.removeTodoList(todo);
+    listWeek.removeTodoList(todo);
+    removeListFromDocument("todo-container");
     refreshList(list, div);
   });
 
   title.textContent = todo.getTitle();
   description.textContent = todo.getDescription();
   date.textContent = todo.getDate();
-  console.log(todo.getDate());
   priority.textContent = todo.getPriority();
   listDiv.appendChild(title);
   listDiv.appendChild(description);
@@ -98,7 +100,7 @@ const addButton = document.getElementById("add-todo-button");
 addButton.addEventListener("click", () => {
   list.addTodoList(createToDo());
   form.style.display = "none";
-  removeList();
+  removeListFromDocument("lists-content");
   refreshList(list, dom);
 });
 
@@ -169,11 +171,3 @@ weekButton.addEventListener("click", () => {
   addWeekList();
   weekContainer.style.display = "block";
 });
-
-function removeListFromDocument(container) {
-  const containerDiv = document.getElementById(container);
-  const listDivs = containerDiv.querySelectorAll(".list-div");
-  listDivs.forEach((element) => {
-    element.remove();
-  });
-}
