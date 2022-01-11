@@ -41,6 +41,7 @@ header {
   border-bottom-style: solid;
   margin-left: 25%;
   width: 800px;
+  align-items: center;
 }
 
 #create-task-button-container {
@@ -88,7 +89,9 @@ form {
 }
 #today-container {
   display: none;
+  margin-top: 50px;
 }
 #week-container {
   display: none;
+  margin-top: 50px;
 }
