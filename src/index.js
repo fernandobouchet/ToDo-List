@@ -35,7 +35,9 @@ class Todo {
 }
 
 class Lists {
-  listContainer = [];
+  constructor() {
+    this.listContainer = [];
+  }
 
   addTodoList(todo) {
     this.listContainer.push(todo);
@@ -102,10 +104,7 @@ function addToList(todo, div) {
   });
 
   editListButton.addEventListener("click", () => {
-    let todoIndex = list.getTodoIndex(todo);
-    console.log(todoIndex);
-    console.log(list.get()[todoIndex].getTitle());
-    EditForm(todoIndex);
+    EditForm(todo);
   });
 
   title.textContent = todo.getTitle();
@@ -120,7 +119,6 @@ function addToList(todo, div) {
   buttons.appendChild(deleteListButton);
   listDiv.appendChild(buttons);
   div.appendChild(listDiv);
-  console.log(list);
 }
 
 const addButton = document.getElementById("add-todo-button");
@@ -212,7 +210,7 @@ weekButton.addEventListener("click", () => {
   weekContainer.style.display = "block";
 });
 
-function EditForm(todoIndex) {
+function EditForm(todo) {
   const editSection = document.getElementById("edit-section");
   const saveButton = document.getElementById("save-edit-button");
   const editTitle = document.querySelector("#edit-title");
@@ -221,19 +219,24 @@ function EditForm(todoIndex) {
   const editDate = document.querySelector("#edit-date");
   editSection.style.display = "block";
 
-  editTitle.value = list.get()[todoIndex].getTitle();
-  editDescription.value = list.get()[todoIndex].getDescription();
-  editDate.value = list.get()[todoIndex].getDate();
-  editPriority.value = list.get()[todoIndex].getPriority();
+  editTitle.value = todo.getTitle();
+  editDescription.value = todo.getDescription();
+  editDate.value = todo.getDate();
+  editPriority.value = todo.getPriority();
 
-  saveButton.addEventListener("click", () => {
-    editSection.style.display = "none";
-    list.get()[todoIndex].setTitle(editTitle.value);
-    list.get()[todoIndex].setDescription(editDescription.value);
-    list.get()[todoIndex].setPriority(editPriority.value);
-    list.get()[todoIndex].setDate(editDate.value);
-    refreshALlLists();
-  });
+  saveButton.addEventListener(
+    "click",
+    () => {
+      editSection.style.display = "none";
+      todo.setTitle(editTitle.value);
+      todo.setDescription(editDescription.value);
+      todo.setPriority(editPriority.value);
+      todo.setDate(editDate.value);
+      console.log(todo);
+      refreshALlLists();
+    },
+    { once: true }
+  );
 }
 
 function refreshALlLists() {
