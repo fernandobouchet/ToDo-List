@@ -41,6 +41,7 @@ header {
   border-bottom-style: solid;
   margin-left: 25%;
   width: 800px;
+  align-items: center;
 }
 
 #create-task-button-container {
@@ -50,6 +51,16 @@ header {
 }
 
 #form-section {
+  margin-top: 39px;
+  padding: 40px;
+  display: none;
+  position: absolute;
+  top: 70px;
+  left: 15%;
+  background-color: #344e41;
+}
+
+#edit-section {
   margin-top: 39px;
   padding: 40px;
   display: none;

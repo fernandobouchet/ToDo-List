@@ -20,6 +20,18 @@ class Todo {
   getPriority() {
     return this.priority;
   }
+  setTitle(newTitle) {
+    this.title = newTitle;
+  }
+  setDescription(newDescription) {
+    this.description = newDescription;
+  }
+  setDate(newDate) {
+    this.dueDate = newDate;
+  }
+  setPriority(newPriority) {
+    this.priority = newPriority;
+  }
 }
 
 class Lists {
@@ -30,6 +42,9 @@ class Lists {
   }
   removeTodoList(todo) {
     this.listContainer.splice(this.listContainer.indexOf(todo), 1);
+  }
+  getTodoIndex(todo) {
+    return this.listContainer.indexOf(todo);
   }
   get() {
     return this.listContainer;
@@ -49,7 +64,7 @@ function createToDo() {
   return newTodo;
 }
 
-function refreshList(listName, div) {
+function addListToDiv(listName, div) {
   listName.get().forEach((element) => {
     addToList(element, div);
   });
@@ -72,15 +87,25 @@ function addToList(todo, div) {
   const description = document.createElement("h3");
   const date = document.createElement("h3");
   const priority = document.createElement("h3");
+  const buttons = document.createElement("div");
+
   const deleteListButton = document.createElement("button");
   deleteListButton.textContent = "Delete";
+  const editListButton = document.createElement("button");
+  editListButton.textContent = "Edit";
 
   deleteListButton.addEventListener("click", () => {
     list.removeTodoList(todo);
     listToday.removeTodoList(todo);
     listWeek.removeTodoList(todo);
-    removeListFromDocument("todo-container");
-    refreshList(list, div);
+    refreshALlLists();
+  });
+
+  editListButton.addEventListener("click", () => {
+    let todoIndex = list.getTodoIndex(todo);
+    console.log(todoIndex);
+    console.log(list.get()[todoIndex].getTitle());
+    EditForm(todoIndex);
   });
 
   title.textContent = todo.getTitle();
@@ -91,8 +116,11 @@ function addToList(todo, div) {
   listDiv.appendChild(description);
   listDiv.appendChild(date);
   listDiv.appendChild(priority);
-  listDiv.appendChild(deleteListButton);
+  buttons.appendChild(editListButton);
+  buttons.appendChild(deleteListButton);
+  listDiv.appendChild(buttons);
   div.appendChild(listDiv);
+  console.log(list);
 }
 
 const addButton = document.getElementById("add-todo-button");
@@ -101,7 +129,7 @@ addButton.addEventListener("click", () => {
   list.addTodoList(createToDo());
   form.style.display = "none";
   removeListFromDocument("lists-content");
-  refreshList(list, dom);
+  addListToDiv(list, dom);
 });
 
 const newTaskButton = document.getElementById("new-task-button");
@@ -120,13 +148,13 @@ const homeButton = document.getElementById("home-button");
 const homeContainer = document.getElementById("home-container");
 homeButton.addEventListener("click", () => {
   closeMenu();
-  addHomeList();
+  refreshHome();
   homeContainer.style.display = "block";
 });
 
-function addHomeList() {
+function refreshHome() {
   removeListFromDocument("lists-content");
-  refreshList(list, dom);
+  addListToDiv(list, dom);
 }
 
 const todayButton = document.getElementById("today-button");
@@ -149,9 +177,12 @@ function addTodayList() {
       listToday.addTodoList(day);
     }
   });
-  removeListFromDocument("today-lists-content");
+  refreshToday();
+}
 
-  refreshList(listToday, todayList);
+function refreshToday() {
+  removeListFromDocument("today-lists-content");
+  addListToDiv(listToday, todayList);
 }
 
 const weekList = document.getElementById("week-lists-content");
@@ -165,9 +196,12 @@ function addWeekList() {
       listWeek.addTodoList(day);
     }
   });
-  removeListFromDocument("week-lists-content");
+  refreshWeek();
+}
 
-  refreshList(listWeek, weekList);
+function refreshWeek() {
+  removeListFromDocument("week-lists-content");
+  addListToDiv(listWeek, weekList);
 }
 
 const weekButton = document.getElementById("week-button");
@@ -177,3 +211,33 @@ weekButton.addEventListener("click", () => {
   addWeekList();
   weekContainer.style.display = "block";
 });
+
+function EditForm(todoIndex) {
+  const editSection = document.getElementById("edit-section");
+  const saveButton = document.getElementById("save-edit-button");
+  const editTitle = document.querySelector("#edit-title");
+  const editDescription = document.querySelector("#edit-description");
+  const editPriority = document.querySelector("#edit-priority");
+  const editDate = document.querySelector("#edit-date");
+  editSection.style.display = "block";
+
+  editTitle.value = list.get()[todoIndex].getTitle();
+  editDescription.value = list.get()[todoIndex].getDescription();
+  editDate.value = list.get()[todoIndex].getDate();
+  editPriority.value = list.get()[todoIndex].getPriority();
+
+  saveButton.addEventListener("click", () => {
+    editSection.style.display = "none";
+    list.get()[todoIndex].setTitle(editTitle.value);
+    list.get()[todoIndex].setDescription(editDescription.value);
+    list.get()[todoIndex].setPriority(editPriority.value);
+    list.get()[todoIndex].setDate(editDate.value);
+    refreshALlLists();
+  });
+}
+
+function refreshALlLists() {
+  refreshHome();
+  refreshToday();
+  addWeekList();
+}

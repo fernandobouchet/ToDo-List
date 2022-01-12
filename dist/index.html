@@ -25,6 +25,23 @@
             </nav>
         </section>
         <div id="todo-container">
+            <section id="edit-section">
+                <form action="">
+                    <label for="title">Title</label>
+                    <input type="text" id="edit-title">
+                    <label for="description">Description</label>
+                    <input type="text" id="edit-description">
+                    <label for="dueDate">Date</label>
+                    <input type="date" name="" id="edit-date">
+                    <label for="priority">Priority</label>
+                    <select name="" id="edit-priority">
+                        <option value="Normal">Normal</option>
+                        <option value="Medium">Medium</option>
+                        <option value="High">High</option>
+                    </select>
+                    <button type="button" id="save-edit-button">Save</button>
+                </form>
+            </section>
             <div id="home-container" class="menu-container">
                 <div id="create-task-button-container"> <button id="new-task-button">+ Create New Task</button>
                 </div>
