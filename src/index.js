@@ -120,8 +120,14 @@ const homeButton = document.getElementById("home-button");
 const homeContainer = document.getElementById("home-container");
 homeButton.addEventListener("click", () => {
   closeMenu();
+  addHomeList();
   homeContainer.style.display = "block";
 });
+
+function addHomeList() {
+  removeListFromDocument("lists-content");
+  refreshList(list, dom);
+}
 
 const todayButton = document.getElementById("today-button");
 const todayContainer = document.getElementById("today-container");
