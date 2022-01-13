@@ -27,7 +27,8 @@ header {
   background-color: #344e41;
 }
 
-#lists-buttons {
+#lists-buttons,
+#lists-button.create-new-project {
   display: flex;
   flex-direction: column;
   margin-top: 30px;
@@ -45,6 +46,7 @@ header {
 }
 
 #create-task-button-container {
+  display: none;
   margin-left: 25%;
   width: 800px;
   margin-bottom: 90px;
@@ -102,4 +104,16 @@ form {
 }
 #week-container {
   display: none;
+}
+#project-container {
+  display: none;
+}
+
+#create-new-project {
+  display: none;
+}
+
+#projects-list {
+  display: flex;
+  flex-direction: column;
 }

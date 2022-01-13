@@ -20,7 +20,13 @@
                     <button id="today-button">Today</button>
                     <button id="week-button">This Week</button>
                     <div id="buttons-separator"></div>
-                    <button id="project-button">New Project</button>
+                    <div>Projects</div>
+                    <button id="project-button">+ New Project</button>
+                    <div id="create-new-project">
+                        <input type="text" name="" id="project-name" placeholder="Insert project name">
+                        <button id="save-new-project-name">Save</button>
+                    </div>
+                    <div id="projects-list"></div>
                 </div>
             </nav>
         </section>
@@ -33,6 +39,10 @@
                     <input type="text" id="edit-description">
                     <label for="dueDate">Date</label>
                     <input type="date" name="" id="edit-date">
+                    <label for="project">Project</label>
+                    <select name="" id="edit-project">
+                        <option value="Default">Default</option>
+                    </select>
                     <label for="priority">Priority</label>
                     <select name="" id="edit-priority">
                         <option value="Normal">Normal</option>
@@ -42,35 +52,40 @@
                     <button type="button" id="save-edit-button">Save</button>
                 </form>
             </section>
+            <section id="form-section">
+                <form action="">
+                    <label for="title">Title</label>
+                    <input type="text" id="title">
+                    <label for="description">Description</label>
+                    <input type="text" id="description">
+                    <label for="dueDate">Date</label>
+                    <input type="date" name="" id="date">
+                    <label for="project">Project</label>
+                    <select name="" id="project">
+                        <option value="Default">Default</option>
+                    </select>
+                    <label for="priority">Priority</label>
+                    <select name="" id="priority">
+                        <option value="Normal">Normal</option>
+                        <option value="Medium">Medium</option>
+                        <option value="High">High</option>
+                    </select>
+                    <button type="button" id="add-todo-button">Add task</button>
+                </form>
+            </section>
+            <div id="create-task-button-container"> <button id="new-task-button">+ Create New Task</button>
+            </div>
             <div id="home-container" class="menu-container">
-                <div id="create-task-button-container"> <button id="new-task-button">+ Create New Task</button>
-                </div>
-                <section id="form-section">
-                    <form action="">
-                        <label for="title">Title</label>
-                        <input type="text" id="title">
-                        <label for="description">Description</label>
-                        <input type="text" id="description">
-                        <label for="dueDate">Date</label>
-                        <input type="date" name="" id="date">
-                        <label for="priority">Priority</label>
-                        <select name="" id="priority">
-                            <option value="Normal">Normal</option>
-                            <option value="Medium">Medium</option>
-                            <option value="High">High</option>
-                        </select>
-                        <button type="button" id="add-todo-button">Add task</button>
-                    </form>
-                </section>
-                <div>
-                    <div id="lists-content"></div>
-                </div>
+                <div id="home-lists-content"></div>
             </div>
             <div id="today-container" class="menu-container">
                 <div id="today-lists-content"></div>
             </div>
             <div id="week-container" class="menu-container">
                 <div id="week-lists-content"></div>
+            </div>
+            <div id="project-container" class="menu-container">
+                <div id="project-lists-content"></div>
             </div>
         </div>
     </div>

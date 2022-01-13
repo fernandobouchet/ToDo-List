@@ -2,11 +2,12 @@ import "./style.css";
 import { format, isThisWeek, parseISO } from "date-fns";
 
 class Todo {
-  constructor(title, description, dueDate, priority) {
+  constructor(title, description, dueDate, projectName, priority) {
     this.title = title;
     this.description = description;
     this.dueDate = dueDate;
     this.priority = priority;
+    this.projectName = projectName;
   }
   getTitle() {
     return this.title;
@@ -20,6 +21,9 @@ class Todo {
   getPriority() {
     return this.priority;
   }
+  getProjectName() {
+    return this.projectName;
+  }
   setTitle(newTitle) {
     this.title = newTitle;
   }
@@ -32,13 +36,16 @@ class Todo {
   setPriority(newPriority) {
     this.priority = newPriority;
   }
+  setProjectName(newProjectName) {
+    this.projectName = newProjectName;
+  }
 }
 
 class Lists {
-  constructor() {
+  constructor(name) {
+    this.name = name;
     this.listContainer = [];
   }
-
   addTodoList(todo) {
     this.listContainer.push(todo);
   }
@@ -53,16 +60,74 @@ class Lists {
   }
 }
 
-const list = new Lists();
-const listToday = new Lists();
-const listWeek = new Lists();
+const list = new Lists("Default");
+const listToday = new Lists("Today");
+const listWeek = new Lists("Week");
+
+const Projects = [];
+
+function createProject(name) {
+  const project = new Lists(name);
+  Projects.push(project);
+  AddProjectToDocument(project);
+}
+
+const projectsListContainer = document.getElementById("project-lists-content");
+const projectsContainer = document.getElementById("project-container");
+
+function AddProjectToDocument(project) {
+  const projectDiv = document.createElement("div");
+  const projectNameTitle = document.createElement("h2");
+  projectDiv.className = "menu-container";
+  projectDiv.style.display = "none";
+  projectNameTitle.textContent = project.name;
+
+  const projectsList = document.getElementById("projects-list");
+  const projectName = document.createElement("button");
+
+  projectName.addEventListener("click", () => {
+    closeMenu();
+    projectsContainer.style.display = "block";
+    projectDiv.style.display = "block";
+    newTasButtonContainer.style.display = "block";
+  });
+
+  projectName.textContent = project.name;
+  projectsList.appendChild(projectName);
+  projectDiv.appendChild(projectNameTitle);
+  projectsListContainer.appendChild(projectDiv);
+}
+
+const newProjectButton = document.getElementById("project-button");
+const createNewProject = document.getElementById("create-new-project");
+const saveNewProjectButton = document.getElementById("save-new-project-name");
+const newProjectNameInput = document.getElementById("project-name");
+
+newProjectButton.addEventListener("click", () => {
+  createNewProject.style.display = "block";
+});
+
+saveNewProjectButton.addEventListener("click", () => {
+  createProject(newProjectNameInput.value);
+  createNewProject.style.display = "none";
+});
+
+function AddProject(projectList) {
+  const filteredProject = Projects.filter((list) => list.name == projectName);
+  filteredProject.forEach((list) => {
+    if (!projectList.get().includes(list)) {
+      projectList.addTodoList(list);
+    }
+  });
+}
 
 function createToDo() {
   const title = document.querySelector("#title").value;
   const description = document.querySelector("#description").value;
   const priority = document.querySelector("#priority").value;
+  const projectName = document.querySelector("#project").value;
   const date = document.querySelector("#date").value;
-  const newTodo = new Todo(title, description, date, priority);
+  const newTodo = new Todo(title, description, date, priority, projectName);
   return newTodo;
 }
 
@@ -80,7 +145,7 @@ function removeListFromDocument(container) {
   });
 }
 
-const dom = document.getElementById("lists-content");
+const dom = document.getElementById("home-lists-content");
 
 function addToList(todo, div) {
   const listDiv = document.createElement("div");
@@ -88,6 +153,7 @@ function addToList(todo, div) {
   const title = document.createElement("h3");
   const description = document.createElement("h3");
   const date = document.createElement("h3");
+  const project = document.createElement("h3");
   const priority = document.createElement("h3");
   const buttons = document.createElement("div");
 
@@ -110,10 +176,12 @@ function addToList(todo, div) {
   title.textContent = todo.getTitle();
   description.textContent = todo.getDescription();
   date.textContent = todo.getDate();
+  project.textContent = todo.getProjectName();
   priority.textContent = todo.getPriority();
   listDiv.appendChild(title);
   listDiv.appendChild(description);
   listDiv.appendChild(date);
+  listDiv.appendChild(project);
   listDiv.appendChild(priority);
   buttons.appendChild(editListButton);
   buttons.appendChild(deleteListButton);
@@ -126,7 +194,7 @@ const addButton = document.getElementById("add-todo-button");
 addButton.addEventListener("click", () => {
   list.addTodoList(createToDo());
   form.style.display = "none";
-  removeListFromDocument("lists-content");
+  removeListFromDocument("home-lists-content");
   addListToDiv(list, dom);
 });
 
@@ -144,14 +212,18 @@ function closeMenu() {
 
 const homeButton = document.getElementById("home-button");
 const homeContainer = document.getElementById("home-container");
+const newTasButtonContainer = document.getElementById(
+  "create-task-button-container"
+);
 homeButton.addEventListener("click", () => {
   closeMenu();
   refreshHome();
   homeContainer.style.display = "block";
+  newTasButtonContainer.style.display = "block";
 });
 
 function refreshHome() {
-  removeListFromDocument("lists-content");
+  removeListFromDocument("home-lists-content");
   addListToDiv(list, dom);
 }
 
@@ -160,6 +232,7 @@ const todayContainer = document.getElementById("today-container");
 todayButton.addEventListener("click", () => {
   closeMenu();
   addTodayList();
+  newTasButtonContainer.style.display = "none";
   todayContainer.style.display = "block";
 });
 
@@ -207,6 +280,7 @@ const weekContainer = document.getElementById("week-container");
 weekButton.addEventListener("click", () => {
   closeMenu();
   addWeekList();
+  newTasButtonContainer.style.display = "none";
   weekContainer.style.display = "block";
 });
 
@@ -215,6 +289,7 @@ function EditForm(todo) {
   const saveButton = document.getElementById("save-edit-button");
   const editTitle = document.querySelector("#edit-title");
   const editDescription = document.querySelector("#edit-description");
+  const editProjectName = document.querySelector("#edit-project");
   const editPriority = document.querySelector("#edit-priority");
   const editDate = document.querySelector("#edit-date");
   editSection.style.display = "block";
@@ -222,6 +297,7 @@ function EditForm(todo) {
   editTitle.value = todo.getTitle();
   editDescription.value = todo.getDescription();
   editDate.value = todo.getDate();
+  editProjectName.value = todo.getProjectName();
   editPriority.value = todo.getPriority();
 
   saveButton.addEventListener(
@@ -230,9 +306,9 @@ function EditForm(todo) {
       editSection.style.display = "none";
       todo.setTitle(editTitle.value);
       todo.setDescription(editDescription.value);
+      todo.setProjectName(editProjectName.value);
       todo.setPriority(editPriority.value);
       todo.setDate(editDate.value);
-      console.log(todo);
       refreshALlLists();
     },
     { once: true }
