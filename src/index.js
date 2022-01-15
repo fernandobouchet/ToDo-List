@@ -87,7 +87,6 @@ function AddProjectToDocument(project) {
     clearList(project);
     addProject(project);
     closeMenu();
-
     projectsContainer.style.display = "block";
     projectDiv.style.display = "block";
     newTasButtonContainer.style.display = "block";
@@ -129,8 +128,6 @@ function addProject(project) {
 function refreshProjects() {
   Projects.forEach((project) => clearList(project));
   Projects.forEach((project) => addProject(project));
-  removeListFromDocument("projects-lists-content");
-  Projects.forEach((project) => addListToDiv(project, projectsListContainer));
 }
 
 function updateProjectsSelect(project) {
@@ -223,8 +220,8 @@ const addButton = document.getElementById("add-todo-button");
 addButton.addEventListener("click", () => {
   list.addTodoList(createToDo());
   form.style.display = "none";
-  removeListFromDocument("home-lists-content");
-  addListToDiv(list, dom);
+  refreshHome();
+  refreshProjects();
 });
 
 const newTaskButton = document.getElementById("new-task-button");
