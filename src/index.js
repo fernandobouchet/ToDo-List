@@ -2,7 +2,7 @@ import "./style.css";
 import { format, isThisWeek, parseISO } from "date-fns";
 
 class Todo {
-  constructor(title, description, dueDate, projectName, priority) {
+  constructor(title, description, dueDate, priority, projectName) {
     this.title = title;
     this.description = description;
     this.dueDate = dueDate;
@@ -72,21 +72,22 @@ function createProject(name) {
   AddProjectToDocument(project);
 }
 
-const projectsListContainer = document.getElementById("project-lists-content");
-const projectsContainer = document.getElementById("project-container");
+const projectsListContainer = document.getElementById("projects-lists-content");
+const projectsContainer = document.getElementById("projects-container");
 
 function AddProjectToDocument(project) {
   const projectDiv = document.createElement("div");
-  const projectNameTitle = document.createElement("h2");
   projectDiv.className = "menu-container";
   projectDiv.style.display = "none";
-  projectNameTitle.textContent = project.name;
 
   const projectsList = document.getElementById("projects-list");
   const projectName = document.createElement("button");
 
   projectName.addEventListener("click", () => {
+    clearList(project);
+    addProject(project);
     closeMenu();
+
     projectsContainer.style.display = "block";
     projectDiv.style.display = "block";
     newTasButtonContainer.style.display = "block";
@@ -94,7 +95,6 @@ function AddProjectToDocument(project) {
 
   projectName.textContent = project.name;
   projectsList.appendChild(projectName);
-  projectDiv.appendChild(projectNameTitle);
   projectsListContainer.appendChild(projectDiv);
 }
 
@@ -112,13 +112,42 @@ saveNewProjectButton.addEventListener("click", () => {
   createNewProject.style.display = "none";
 });
 
-function AddProject(projectList) {
-  const filteredProject = Projects.filter((list) => list.name == projectName);
+function addProject(project) {
+  const filteredProject = list
+    .get()
+    .filter((list) => list.getProjectName() == project.name);
   filteredProject.forEach((list) => {
-    if (!projectList.get().includes(list)) {
-      projectList.addTodoList(list);
+    if (!project.get().includes(list)) {
+      project.addTodoList(list);
     }
   });
+  updateProjectsSelect(project);
+  removeListFromDocument("projects-lists-content");
+  addListToDiv(project, projectsListContainer);
+}
+
+function refreshProjects() {
+  Projects.forEach((project) => clearList(project));
+  Projects.forEach((project) => addProject(project));
+  removeListFromDocument("projects-lists-content");
+  Projects.forEach((project) => addListToDiv(project, projectsListContainer));
+}
+
+function updateProjectsSelect(project) {
+  const select = document.getElementById("project");
+  const selectEdit = document.getElementById("edit-project");
+  const projectName = document.createElement("option");
+  const editProjectName = document.createElement("option");
+  const options = [...selectEdit.options].map((option) => option.value);
+
+  if (!options.includes(project.name)) {
+    projectName.value = project.name;
+    projectName.textContent = project.name;
+    editProjectName.value = project.name;
+    editProjectName.textContent = project.name;
+    selectEdit.appendChild(editProjectName);
+    select.appendChild(projectName);
+  }
 }
 
 function createToDo() {
@@ -230,8 +259,9 @@ function refreshHome() {
 const todayButton = document.getElementById("today-button");
 const todayContainer = document.getElementById("today-container");
 todayButton.addEventListener("click", () => {
-  closeMenu();
+  clearList(listToday);
   addTodayList();
+  closeMenu();
   newTasButtonContainer.style.display = "none";
   todayContainer.style.display = "block";
 });
@@ -248,10 +278,13 @@ function addTodayList() {
       listToday.addTodoList(day);
     }
   });
-  refreshToday();
+  removeListFromDocument("today-lists-content");
+  addListToDiv(listToday, todayList);
 }
 
 function refreshToday() {
+  clearList(listToday);
+  addTodayList();
   removeListFromDocument("today-lists-content");
   addListToDiv(listToday, todayList);
 }
@@ -267,10 +300,13 @@ function addWeekList() {
       listWeek.addTodoList(day);
     }
   });
-  refreshWeek();
+  removeListFromDocument("week-lists-content");
+  addListToDiv(listWeek, weekList);
 }
 
 function refreshWeek() {
+  clearList(listWeek);
+  addWeekList();
   removeListFromDocument("week-lists-content");
   addListToDiv(listWeek, weekList);
 }
@@ -278,8 +314,9 @@ function refreshWeek() {
 const weekButton = document.getElementById("week-button");
 const weekContainer = document.getElementById("week-container");
 weekButton.addEventListener("click", () => {
-  closeMenu();
+  clearList(listWeek);
   addWeekList();
+  closeMenu();
   newTasButtonContainer.style.display = "none";
   weekContainer.style.display = "block";
 });
@@ -318,5 +355,12 @@ function EditForm(todo) {
 function refreshALlLists() {
   refreshHome();
   refreshToday();
-  addWeekList();
+  refreshWeek();
+  refreshProjects();
+}
+
+function clearList(listToReset) {
+  while (listToReset.get().length > 0) {
+    listToReset.get().pop();
+  }
 }
