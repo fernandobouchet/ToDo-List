@@ -9,7 +9,7 @@ body {
   flex-direction: column;
   margin: 0;
   text-align: center;
-  background-color: #588157;
+  background-color: #343a40;
   font-family: "Open Sans", sans-serif;
   color: white;
   font-size: 20px;
@@ -17,14 +17,14 @@ body {
 
 header {
   width: 100%;
-  background-color: #3a5a40;
+  background-color: #212529;
 }
 
 #menu-section {
   width: 200px;
   height: 100%;
   position: absolute;
-  background-color: #344e41;
+  background-color: #495057;
 }
 
 #lists-buttons,
@@ -59,7 +59,7 @@ header {
   position: absolute;
   top: 70px;
   left: 15%;
-  background-color: #344e41;
+  background-color: #6c757d;
 }
 
 #edit-section {
@@ -69,7 +69,7 @@ header {
   position: absolute;
   top: 70px;
   left: 15%;
-  background-color: #344e41;
+  background-color: #6c757d;
 }
 
 button {
@@ -78,12 +78,12 @@ button {
   font-size: inherit;
   height: 40px;
   border: none;
-  background-color: #a3b18a;
+  background-color: #6c757d;
 }
 
 button:hover {
   cursor: pointer;
-  background-color: white;
+  background-color: #adb5bd;
 }
 
 form {
