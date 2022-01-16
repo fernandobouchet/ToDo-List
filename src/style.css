@@ -1,13 +1,12 @@
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans&display=swap");
 
-html {
-  width: 100%;
-}
-
+html,
 body {
   display: flex;
   flex-direction: column;
   margin: 0;
+  overflow-x: hidden;
+  width: 100%;
   text-align: center;
   background-color: #343a40;
   font-family: "Open Sans", sans-serif;
@@ -96,7 +95,7 @@ form {
 }
 
 #create-task-button-container {
-  display: block;
+  display: flex;
 }
 
 #home-container {
@@ -119,4 +118,39 @@ form {
 #projects-list {
   display: flex;
   flex-direction: column;
+}
+
+/* Landscape phones and down */
+@media (max-width: 480px) {
+  body {
+    font-size: 0.65rem;
+  }
+  header {
+    font-size: 1rem;
+  }
+
+  #menu-section {
+    width: 70px;
+    height: 100%;
+  }
+
+  .list-div {
+    margin-left: 23%;
+    width: 310px;
+    font-size: 0.5rem;
+  }
+
+  #new-task-button {
+    width: 310px;
+  }
+
+  #edit-section,
+  #form-section {
+    top: 10%;
+    left: 15%;
+  }
+}
+
+/* Landscape phone to portrait tablet */
+@media (max-width: 767px) {
 }

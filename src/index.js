@@ -97,7 +97,7 @@ function AddProjectToDocument(project) {
     closeMenu();
     projectsContainer.style.display = "block";
     projectDiv.style.display = "block";
-    newTaskButtonContainer.style.display = "block";
+    newTaskButtonContainer.style.display = "flex";
   });
 
   projectName.textContent = project.name;
@@ -285,7 +285,7 @@ homeButton.addEventListener("click", () => {
   closeMenu();
   refreshHome();
   homeContainer.style.display = "block";
-  newTaskButtonContainer.style.display = "block";
+  newTaskButtonContainer.style.display = "flex";
 });
 
 function refreshHome() {
