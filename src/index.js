@@ -63,6 +63,7 @@ class Lists {
 const list = new Lists("Default");
 const listToday = new Lists("Today");
 const listWeek = new Lists("Week");
+const defaultList = new Lists("Default");
 
 const Projects = [];
 
@@ -74,6 +75,9 @@ function createProject(name) {
 
 const projectsListContainer = document.getElementById("projects-lists-content");
 const projectsContainer = document.getElementById("projects-container");
+
+Projects.push(defaultList);
+AddProjectToDocument(defaultList);
 
 function AddProjectToDocument(project) {
   const projectDiv = document.createElement("div");
@@ -89,7 +93,7 @@ function AddProjectToDocument(project) {
     closeMenu();
     projectsContainer.style.display = "block";
     projectDiv.style.display = "block";
-    newTasButtonContainer.style.display = "block";
+    newTaskButtonContainer.style.display = "block";
   });
 
   projectName.textContent = project.name;
@@ -215,11 +219,40 @@ function addToList(todo, div) {
   div.appendChild(listDiv);
 }
 
+const cancelTodoButton = document.getElementById("cancel-todo-button");
+const cancelEditButton = document.getElementById("cancel-edit-button");
+
+cancelTodoButton.addEventListener("click", () => {
+  closeTodo();
+});
+
+function closeTodo() {
+  form.style.display = "none";
+  document.querySelector("#title").value = "";
+  document.querySelector("#description").value = "";
+  document.querySelector("#priority").value = "Normal";
+  document.querySelector("#project").value = "Default";
+  document.querySelector("#date").value = todayDate;
+}
+
+cancelEditButton.addEventListener("click", () => {
+  closeEdit();
+});
+
+function closeEdit() {
+  editSection.style.display = "none";
+  document.querySelector("#edit-title").value = "";
+  document.querySelector("#edit-description").value = "";
+  document.querySelector("#edit-priority").value = "Normal";
+  document.querySelector("#edit-project").value = "Default";
+  document.querySelector("#edit-date").value = todayDate;
+}
+
 const addButton = document.getElementById("add-todo-button");
 
 addButton.addEventListener("click", () => {
   list.addTodoList(createToDo());
-  form.style.display = "none";
+  closeTodo();
   refreshHome();
   refreshProjects();
 });
@@ -228,6 +261,7 @@ const newTaskButton = document.getElementById("new-task-button");
 const form = document.getElementById("form-section");
 
 newTaskButton.addEventListener("click", () => {
+  closeTodo();
   form.style.display = "block";
 });
 
@@ -238,14 +272,14 @@ function closeMenu() {
 
 const homeButton = document.getElementById("home-button");
 const homeContainer = document.getElementById("home-container");
-const newTasButtonContainer = document.getElementById(
+const newTaskButtonContainer = document.getElementById(
   "create-task-button-container"
 );
 homeButton.addEventListener("click", () => {
   closeMenu();
   refreshHome();
   homeContainer.style.display = "block";
-  newTasButtonContainer.style.display = "block";
+  newTaskButtonContainer.style.display = "block";
 });
 
 function refreshHome() {
@@ -259,7 +293,7 @@ todayButton.addEventListener("click", () => {
   clearList(listToday);
   addTodayList();
   closeMenu();
-  newTasButtonContainer.style.display = "none";
+  newTaskButtonContainer.style.display = "none";
   todayContainer.style.display = "block";
 });
 
@@ -314,12 +348,13 @@ weekButton.addEventListener("click", () => {
   clearList(listWeek);
   addWeekList();
   closeMenu();
-  newTasButtonContainer.style.display = "none";
+  newTaskButtonContainer.style.display = "none";
   weekContainer.style.display = "block";
 });
 
+const editSection = document.getElementById("edit-section");
+
 function EditForm(todo) {
-  const editSection = document.getElementById("edit-section");
   const saveButton = document.getElementById("save-edit-button");
   const editTitle = document.querySelector("#edit-title");
   const editDescription = document.querySelector("#edit-description");
@@ -337,12 +372,12 @@ function EditForm(todo) {
   saveButton.addEventListener(
     "click",
     () => {
-      editSection.style.display = "none";
       todo.setTitle(editTitle.value);
       todo.setDescription(editDescription.value);
       todo.setProjectName(editProjectName.value);
       todo.setPriority(editPriority.value);
       todo.setDate(editDate.value);
+      closeEdit();
       refreshALlLists();
     },
     { once: true }
