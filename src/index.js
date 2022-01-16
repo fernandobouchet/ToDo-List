@@ -60,7 +60,7 @@ class Lists {
   }
 }
 
-const list = new Lists("Default");
+const list = new Lists("all");
 const listToday = new Lists("Today");
 const listWeek = new Lists("Week");
 const defaultList = new Lists("Default");
@@ -68,9 +68,13 @@ const defaultList = new Lists("Default");
 const Projects = [];
 
 function createProject(name) {
-  const project = new Lists(name);
-  Projects.push(project);
-  AddProjectToDocument(project);
+  Projects.forEach((project) => {
+    if (project.name !== name) {
+      const project = new Lists(name);
+      Projects.push(project);
+      AddProjectToDocument(project);
+    }
+  });
 }
 
 const projectsListContainer = document.getElementById("projects-lists-content");
@@ -197,6 +201,7 @@ function addToList(todo, div) {
     listToday.removeTodoList(todo);
     listWeek.removeTodoList(todo);
     refreshALlLists();
+    saveList();
   });
 
   editListButton.addEventListener("click", () => {
@@ -255,6 +260,7 @@ addButton.addEventListener("click", () => {
   closeTodo();
   refreshHome();
   refreshProjects();
+  saveList();
 });
 
 const newTaskButton = document.getElementById("new-task-button");
@@ -379,6 +385,7 @@ function EditForm(todo) {
       todo.setDate(editDate.value);
       closeEdit();
       refreshALlLists();
+      saveList();
     },
     { once: true }
   );
@@ -396,3 +403,33 @@ function clearList(listToReset) {
     listToReset.get().pop();
   }
 }
+
+function saveList() {
+  localStorage.setItem("localList", JSON.stringify(list.get()));
+}
+
+function restoreList() {
+  let parsedList = JSON.parse(localStorage.getItem("localList"));
+  if (parsedList !== null) {
+    parsedList.forEach((savedList) =>
+      list.addTodoList(createToDoFromLocalStorage(savedList))
+    );
+
+    list
+      .get()
+      .forEach((restoredList) => createProject(restoredList.projectName));
+  }
+}
+
+function createToDoFromLocalStorage(list) {
+  const title = list.title;
+  const description = list.description;
+  const priority = list.priority;
+  const projectName = list.projectName;
+  const date = list.dueDate;
+  const newTodo = new Todo(title, description, date, priority, projectName);
+  return newTodo;
+}
+
+restoreList();
+refreshHome();
